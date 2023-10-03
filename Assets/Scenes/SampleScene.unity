@@ -843,7 +843,7 @@ MonoBehaviour:
   - {fileID: 1998176923}
   - {fileID: 521569031}
   - {fileID: 1313768985}
-  _countEnemy: 9
+  _countEnemy: 3
 --- !u!4 &580294424
 Transform:
   m_ObjectHideFlags: 0

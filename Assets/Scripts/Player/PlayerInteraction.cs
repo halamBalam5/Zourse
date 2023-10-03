@@ -49,23 +49,9 @@ public class PlayerInteraction : MonoBehaviour
         armedWeapon.Shoot();
     }
 
-    private bool AddWeapon(WeaponData weaponData)
+    private void AddWeapon(WeaponData weaponData)
     {
-        bool isAdded = false;
-        if (inventory.Count < _inventorySize)
-        {
-            inventory.Add(weaponData);
-            Instantiate(weaponData, _gunPoint);
-            isAdded = true;
-
-            EventManager.Instance.InvokeWeaponAdded(weaponData);
-        }
-        return isAdded;
-    }
-
-    private WeaponData GetWeapon(int index)
-    {
-        return inventory[index];
+        EventManager.Instance.InvokeWeaponAdded(weaponData);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -73,10 +59,8 @@ public class PlayerInteraction : MonoBehaviour
         if (collision.CompareTag("Weapon"))
         {
             Weapon _currentWeapon = collision.gameObject.GetComponent<Weapon>();
-            if (AddWeapon(_currentWeapon.GetWeaponData()))
-            {
-                _currentWeapon.DestroySelf();
-            }
+            AddWeapon(_currentWeapon.GetWeaponData());
+            _currentWeapon.DestroySelf();
         }
 
         else if (collision.CompareTag("Ammo"))
