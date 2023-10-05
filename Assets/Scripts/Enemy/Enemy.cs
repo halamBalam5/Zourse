@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     private bool lookRight = true;
     private Animator anim;
     private bool isWalk;
+    private bool isStanding;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -31,6 +32,10 @@ public class Enemy : MonoBehaviour
         if (Vector2.Distance(transform.position, PlayerInteraction.Instance.transform.position) <= _distanceReaction)
         {
             isWalk = true;
+            if (isStanding == true)
+            {
+                return;
+            }
             _transformBody.position = Vector2.MoveTowards(_transformBody.position, PlayerInteraction.Instance.transform.position + Vector3.up * 0.3f, _speed * Time.deltaTime);
             anim.SetBool("isWalk", isWalk);
         }
@@ -66,13 +71,21 @@ public class Enemy : MonoBehaviour
             Flip();
         }
     }
-    void Flip()
+    private void Flip()
     {
         lookRight = !lookRight;
 
         Vector3 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+    }
+    private void StopWalking()
+    {
+        isStanding = true;
+    }
+    private void StartWalking()
+    {
+        isStanding = false;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
