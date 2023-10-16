@@ -45,20 +45,24 @@ public class Enemy : MonoBehaviour
             anim.SetBool("isWalk", isWalk);
         }
     }
-    async public void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         health -= damage;
         _healthbar.fillAmount = health / MAX_HEALTH;
         _deathEffect.Play();
         if (health <= 0)
         {
-            await Task.Delay(500);
             if (_transformBody != null)
             {
                 Instantiate(_ammoData[Random.Range(0, _ammoData.Count)].ammoPrefab, transform.position, Quaternion.identity);
-                Destroy(_transformBody.gameObject);
+                StopWalking();
+                anim.SetTrigger("Death");
             }
         }
+    }
+    public void DestroyItself()
+    {
+        Destroy(_transformBody.gameObject);
     }
     private void FixedUpdate()
     {
